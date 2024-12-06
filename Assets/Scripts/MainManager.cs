@@ -11,6 +11,8 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text nameText;
+
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -36,8 +38,14 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
-    }
 
+        // »щем объект по имени
+        GameObject targetObject = GameObject.Find("Menu Manager");
+        MenuManager menuManager = targetObject.GetComponent<MenuManager>();
+        int highScore = PlayerPrefs.GetInt("HighScore", 0);
+        nameText.text = $"Best Score : {menuManager.nameUser} : {highScore}";
+
+    }
     private void Update()
     {
         if (!m_Started)
@@ -72,5 +80,7 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        PlayerPrefs.SetInt("HighScore", m_Points);
+        PlayerPrefs.Save(); // явно сохран€ем изменени€
     }
 }
